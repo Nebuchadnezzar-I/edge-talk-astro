@@ -1,0 +1,29 @@
+---
+export const partial = true;
+const { sid } = Astro.params;
+
+import Navigation from '../../components/Navigation.astro'
+import Head from '../../components/Head.astro'
+import { ChatClient } from '@/components/custom/chat/window';
+import { db, eq, Sessions } from 'astro:db';
+
+let sessionData = null;
+if (sid) {
+    const temp = await db.select().from(Sessions).where(eq(Sessions.id, parseInt(sid)));
+    sessionData = temp[0];
+}
+---
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <Head title="EdgeTalk" description="Astro" />
+    </head>
+    <body>
+        <Navigation />
+
+        <div class="flex flex-col gap-3 body-height w-full h-full lg:max-w-[80%] mx-auto p-5">
+            <ChatClient client:load sessionData={sessionData} />
+        </div>
+    </body>
+</html>

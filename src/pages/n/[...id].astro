@@ -1,23 +1,22 @@
 ---
 export const partial = true;
+const { id } = Astro.params;
 
+import NegotiationTable from "@/components/custom/NegotiationTable.astro";
 import NegotiationList from "@/components/custom/NegotiationList.astro";
 import Navigation from '@/components/Navigation.astro';
 import Head from '@/components/Head.astro';
-import NegotiationTable from "@/components/custom/NegotiationTable.astro";
 
 // Modals
 import { NewNegotiation } from "@/components/custom/modal/NewNegotiation.tsx";
 import { NewSession } from "@/components/custom/modal/NewSession";
 import { RemoveNegotiation } from "@/components/custom/modal/RemoveNegotiation";
-
-const { id } = Astro.params;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <Head title="Edge-talk" description="Astro" />
+        <Head title="EdgeTalk" description="Astro" />
     </head>
     <body>
         <Navigation />

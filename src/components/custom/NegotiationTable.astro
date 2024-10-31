@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 const { id } = Astro.props;
 
-let negotiation_data:
+let session_data:
     {
         id: number,
         name: string,
@@ -15,7 +15,7 @@ let negotiation_data:
     = [];
 
 if (id !== undefined) {
-    negotiation_data = await db.select().from(Sessions).where(
+    session_data = await db.select().from(Sessions).where(
         eq(Sessions.nId, parseInt(id, 10))
     );
 }
@@ -30,19 +30,21 @@ if (id !== undefined) {
         </TableRow>
     </TableHeader>
     <TableBody>
-        {negotiation_data.map((n) => (
+        {session_data.map((s) => (
             <TableRow>
-                <TableCell className="font-medium">{n.name}</TableCell>
+                <TableCell className="font-medium">{s.name}</TableCell>
                 <!-- TODO: Add modal -->
                 <TableCell className="font-medium">
                     <Button variant="link" className="h-0 p-0">
                         Q&A
                     </Button>
                 </TableCell>
-                <TableCell className="font-medium">
+            <TableCell className="font-medium">
+                <a target="_blank" href={`/s/${s.id}`}>
                     <Button variant="link" className="h-0 p-0">
-                        Open session {n.id}
+                        Open session {s.id}
                     </Button>
+                </a>
                 </TableCell>
             </TableRow>
         ))}
