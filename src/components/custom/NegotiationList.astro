@@ -1,0 +1,33 @@
+---
+const { id } = Astro.props;
+
+import { Negotiations } from "astro:db";
+import { db } from "astro:db";
+
+const negotiation = await db.select().from(Negotiations);
+---
+
+<div class="flex flex-col gap-1 overflow-y-auto">
+    {
+        negotiation.map((n) => (
+            <a
+                class={`cursor-pointer lg:mr-2
+                    items-center gap-2 whitespace-nowrap rounded-md text-sm
+                    font-medium ring-offset-background transition-colors
+                    focus-visible:outline-none focus-visible:ring-2
+                    focus-visible:ring-ring focus-visible:ring-offset-2
+                    disabled:pointer-events-none disabled:opacity-50
+                    [&_svg]:pointer-events-none [&_svg]:size-4
+                    [&_svg]:shrink-0 hover:bg-accent
+                    hover:text-accent-foreground h-10 px-4 py-2 flex justify-between
+
+                    ${id === JSON.stringify(n.id) && 'bg-accent text-accent-foreground'}
+                `}
+                href={`/n/${n.id}`}
+            >
+                {n.name}
+            </a>
+            )
+        )
+    }
+</div>

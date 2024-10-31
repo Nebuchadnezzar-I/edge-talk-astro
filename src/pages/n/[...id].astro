@@ -1,0 +1,56 @@
+---
+export const partial = true;
+
+import NegotiationList from "@/components/custom/NegotiationList.astro";
+import Navigation from '@/components/Navigation.astro';
+import Head from '@/components/Head.astro';
+import NegotiationTable from "@/components/custom/NegotiationTable.astro";
+
+// Modals
+import { NewNegotiation } from "@/components/custom/modal/NewNegotiation.tsx";
+import { NewSession } from "@/components/custom/modal/NewSession";
+import { RemoveNegotiation } from "@/components/custom/modal/RemoveNegotiation";
+
+const { id } = Astro.params;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <Head title="Edge-talk" description="Astro" />
+    </head>
+    <body>
+        <Navigation />
+
+        <div class="
+            flex gap-4 body-height w-full h-full p-3 overflow-x-auto snap-x
+            snap-mandatory sm:flex-nowrap flex-nowrap"
+        >
+
+            <div class="
+                w-full min-w-full sm:min-w-[300px] sm:max-w-[500px] flex
+                flex-col gap-1 overflow-y-auto snap-center h-full"
+            >
+                <NewNegotiation client:load />
+                <NegotiationList id={id} />
+            </div>
+
+            <div class={`w-full min-w-full lg:min-w-min snap-center h-full
+                    ${id === undefined && "flex items-center justify-center font-bold"}`}
+            >
+                {id === undefined && <p>Select a negotiation</p>}
+
+                {id !== undefined && (
+                    <>
+                        <div class="flex items-center pb-2 gap-2 justify-end">
+                            <NewSession client:idle id={id} />
+                            <RemoveNegotiation client:idle id={id} />
+                        </div>
+
+                        <NegotiationTable id={id} />
+                    </>
+                )}
+            </div>
+        </div>
+    </body>
+</html>

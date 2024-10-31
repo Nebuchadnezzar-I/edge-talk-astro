@@ -1,0 +1,50 @@
+---
+import { db, Sessions, eq } from "astro:db";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Button } from "../ui/button";
+
+const { id } = Astro.props;
+
+let negotiation_data:
+    {
+        id: number,
+        name: string,
+        created_at: Date,
+        updated_at: Date,
+        nId: number}[]
+    = [];
+
+if (id !== undefined) {
+    negotiation_data = await db.select().from(Sessions).where(
+        eq(Sessions.nId, parseInt(id, 10))
+    );
+}
+---
+
+<Table>
+    <TableHeader>
+        <TableRow>
+            <TableHead className="w-[200px]">Name</TableHead>
+            <TableHead className="w-[200px]">Q&A</TableHead>
+            <TableHead>Action</TableHead>
+        </TableRow>
+    </TableHeader>
+    <TableBody>
+        {negotiation_data.map((n) => (
+            <TableRow>
+                <TableCell className="font-medium">{n.name}</TableCell>
+                <!-- TODO: Add modal -->
+                <TableCell className="font-medium">
+                    <Button variant="link" className="h-0 p-0">
+                        Q&A
+                    </Button>
+                </TableCell>
+                <TableCell className="font-medium">
+                    <Button variant="link" className="h-0 p-0">
+                        Open session {n.id}
+                    </Button>
+                </TableCell>
+            </TableRow>
+        ))}
+    </TableBody>
+</Table>

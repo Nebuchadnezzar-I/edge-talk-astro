@@ -1,7 +1,0 @@
-- [ ] Add content screen
-- [ ] Add new session
-- [ ] Add remove negotiation
-- [ ] Add responsivity
-- [ ] Add questionare
-- [ ] Add Email / Chat link
-- [ ] Implement Email & Chat

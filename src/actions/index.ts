@@ -1,27 +1,52 @@
+import { db, eq, Negotiations, Sessions } from 'astro:db';
 import { defineAction } from 'astro:actions';
 import { z } from 'astro:content';
-import { db, Negotiations } from 'astro:db';
 
 export const server = {
-    myAction: defineAction({
+    newNegotiation: defineAction({
         input: z.object({
             name: z.string()
         }),
         handler: async (input) => {
-            try {
-                await db.insert(Negotiations).values({
-                    id: Math.floor(Math.random() * 1e6),
-                    name: input.name,
-                    created_at: new Date(),
-                    updated_at: new Date()
-                });
+            await db.insert(Negotiations).values({
+                id: Math.floor(Math.random() * 1e6),
+                name: input.name,
+                created_at: new Date(),
+                updated_at: new Date()
+            });
 
-                return { message: `Negotiation ${input.name} created successfully` };
-            } catch (error) {
-                console.error("Database insertion error:", error);
-                throw new Error("Failed to create negotiation. Please try again later.");
-            }
+            return { message: `Negotiation ${input.name} created successfully` };
         }
-    })
-}
+    }),
 
+    removeNegotiation: defineAction({
+        input: z.object({
+            id: z.number()
+        }),
+        handler: async (input) => {
+            await db.delete(Negotiations).where(eq(Negotiations.id, input.id));
+
+            return { message: `Negotiation ${input.id} removed successfully` };
+        }
+    }),
+
+    newSession: defineAction({
+        input: z.object({
+            name: z.string(),
+            nId: z.number(),
+            qna: z.string()
+        }),
+        handler: async (input) => {
+            await db.insert(Sessions).values({
+                id: Math.floor(Math.random() * 1e6),
+                name: input.name,
+                nId: input.nId,
+                qna: input.qna,
+                created_at: new Date(),
+                updated_at: new Date()
+            });
+
+            return { message: `Session ${input.name} created successfully` };
+        }
+    }),
+}
