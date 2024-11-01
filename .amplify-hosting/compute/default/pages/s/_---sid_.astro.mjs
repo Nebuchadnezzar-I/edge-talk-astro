@@ -10,7 +10,7 @@ import { normalizeDatabaseUrl, createLocalDatabaseClient, asDrizzleTable } from 
 import { eq } from '@astrojs/db/dist/runtime/virtual.js';
 export { renderers } from '../../renderers.mjs';
 
-function ChatClient({ sessionData }) {
+function ChatClient({ sessionData, openAIkey }) {
   if (!sessionData) return null;
   if (!sessionData.chatHistory) sessionData.chatHistory = [{ c: "" }, { s: "" }];
   const [chatHistory, setChatHistory] = useState(sessionData.chatHistory);
@@ -36,7 +36,7 @@ function ChatClient({ sessionData }) {
     setIsFetching(false);
   };
   const fetchAIResponse = async () => {
-    const apiKey = "";
+    const apiKey = openAIkey;
     const url = `https://api.openai.com/v1/chat/completions`;
     try {
       const response = await fetch(url, {
@@ -132,9 +132,9 @@ const $$ = createComponent(async ($$result, $$props, $$slots) => {
     const temp = await db.select().from(Sessions).where(eq(Sessions.id, parseInt(sid)));
     sessionData = temp[0];
   }
-  return renderTemplate`<html> <head>${renderComponent($$result, "Head", $$Head, { "title": "EdgeTalk", "description": "Astro" })}${renderHead()}</head> <body> ${renderComponent($$result, "Navigation", $$Navigation, {})} <div class="flex flex-col gap-3 body-height w-full h-full lg:max-w-[80%] mx-auto px-5 py-1"> ${renderComponent($$result, "ChatClient", ChatClient, { "client:load": true, "sessionData": sessionData, "client:component-hydration": "load", "client:component-path": "@/components/custom/chat/window", "client:component-export": "ChatClient" })} </div> </body></html>`;
+  const OPEN_AI_API_KEY = undefined                                      ;
+  return renderTemplate`<html> <head>${renderComponent($$result, "Head", $$Head, { "title": "EdgeTalk", "description": "Astro" })}${renderHead()}</head> <body> ${renderComponent($$result, "Navigation", $$Navigation, {})} <div class="flex flex-col gap-3 body-height w-full h-full lg:max-w-[80%] mx-auto px-5 py-1"> ${renderComponent($$result, "ChatClient", ChatClient, { "client:load": true, "sessionData": sessionData, "openAIkey": OPEN_AI_API_KEY, "client:component-hydration": "load", "client:component-path": "@/components/custom/chat/window", "client:component-export": "ChatClient" })} </div> </body></html>`;
 }, "/home/admiralcapo/personal/edge-talk-astro/src/pages/s/[...sid].astro", void 0);
-
 const $$file = "/home/admiralcapo/personal/edge-talk-astro/src/pages/s/[...sid].astro";
 const $$url = "/s/[...sid]";
 

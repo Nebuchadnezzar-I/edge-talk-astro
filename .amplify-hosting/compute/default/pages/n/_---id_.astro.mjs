@@ -378,7 +378,7 @@ function NewNegotiation() {
 }
 
 const qanda = [];
-function NewSession({ id }) {
+function NewSession({ id, openAIkey }) {
   const [userAnswer, setUserAnswer] = useState("");
   const [question, setQuestion] = useState("What’s one key outcome you hope to achieve in this negotiation?");
   const [loading, startTransition] = useTransition();
@@ -410,7 +410,7 @@ function NewSession({ id }) {
     });
   };
   const generateNewQuestion = async () => {
-    const apiKey = "";
+    const apiKey = openAIkey;
     const url = `https://api.openai.com/v1/chat/completions`;
     try {
       const response = await fetch(url, {
@@ -494,14 +494,14 @@ const $$ = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$;
   const { id } = Astro2.params;
+  const OPEN_AI_API_KEY = undefined                                      ;
   return renderTemplate`<html lang="en"> <head>${renderComponent($$result, "Head", $$Head, { "title": "EdgeTalk", "description": "Astro" })}${renderHead()}</head> <body> ${renderComponent($$result, "Navigation", $$Navigation, {})} <div class="
             flex gap-4 body-height w-full h-full p-3 overflow-x-auto snap-x
             snap-mandatory sm:flex-nowrap flex-nowrap"> <div class="
                 w-full min-w-full sm:min-w-[300px] sm:max-w-[500px] flex
                 flex-col gap-1 overflow-y-auto snap-center h-full"> ${renderComponent($$result, "NewNegotiation", NewNegotiation, { "client:load": true, "client:component-hydration": "load", "client:component-path": "@/components/custom/modal/NewNegotiation.tsx", "client:component-export": "NewNegotiation" })} ${renderComponent($$result, "NegotiationList", $$NegotiationList, { "id": id })} </div> <div${addAttribute(`w-full min-w-full lg:min-w-min snap-center h-full
-                    ${id === void 0 && "flex items-center justify-center font-bold"}`, "class")}> ${id === void 0 && renderTemplate`<p>Select a negotiation</p>`} ${id !== void 0 && renderTemplate`${renderComponent($$result, "Fragment", Fragment, {}, { "default": ($$result2) => renderTemplate` <div class="flex items-center pb-2 gap-2 justify-end"> ${renderComponent($$result2, "NewSession", NewSession, { "client:idle": true, "id": id, "client:component-hydration": "idle", "client:component-path": "@/components/custom/modal/NewSession", "client:component-export": "NewSession" })} ${renderComponent($$result2, "RemoveNegotiation", RemoveNegotiation, { "client:idle": true, "id": id, "client:component-hydration": "idle", "client:component-path": "@/components/custom/modal/RemoveNegotiation", "client:component-export": "RemoveNegotiation" })} </div> ${renderComponent($$result2, "NegotiationTable", $$NegotiationTable, { "id": id })} ` })}`} </div> </div> </body></html>`;
+                    ${id === void 0 && "flex items-center justify-center font-bold"}`, "class")}> ${id === void 0 && renderTemplate`<p>Select a negotiation</p>`} ${id !== void 0 && renderTemplate`${renderComponent($$result, "Fragment", Fragment, {}, { "default": ($$result2) => renderTemplate` <div class="flex items-center pb-2 gap-2 justify-end"> ${renderComponent($$result2, "NewSession", NewSession, { "client:idle": true, "id": id, "openAIkey": OPEN_AI_API_KEY, "client:component-hydration": "idle", "client:component-path": "@/components/custom/modal/NewSession", "client:component-export": "NewSession" })} ${renderComponent($$result2, "RemoveNegotiation", RemoveNegotiation, { "client:idle": true, "id": id, "client:component-hydration": "idle", "client:component-path": "@/components/custom/modal/RemoveNegotiation", "client:component-export": "RemoveNegotiation" })} </div> ${renderComponent($$result2, "NegotiationTable", $$NegotiationTable, { "id": id })} ` })}`} </div> </div> </body></html>`;
 }, "/home/admiralcapo/personal/edge-talk-astro/src/pages/n/[...id].astro", void 0);
-
 const $$file = "/home/admiralcapo/personal/edge-talk-astro/src/pages/n/[...id].astro";
 const $$url = "/n/[...id]";
 

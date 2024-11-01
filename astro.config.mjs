@@ -6,7 +6,6 @@ import db from '@astrojs/db';
 import amplify from 'astro-aws-amplify';
 
 export default defineConfig({
-    outDir: './dist',
     output: "server",
     integrations: [react(), tailwind({
         applyBaseStyles: false,
