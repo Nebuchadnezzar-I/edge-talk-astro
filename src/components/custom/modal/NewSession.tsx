@@ -22,7 +22,7 @@ interface SessionDialogProps {
 
 export function NewSession({ id }: SessionDialogProps) {
     const [userAnswer, setUserAnswer] = useState("");
-    const [question, setQuestion] = useState("What is the session about?");
+    const [question, setQuestion] = useState("What’s one key outcome you hope to achieve in this negotiation?");
     const [loading, startTransition] = useTransition();
     const [isDialogOpen, setIsDialogOpen] = useState(true);
     if (id === '') return null;
@@ -40,7 +40,7 @@ export function NewSession({ id }: SessionDialogProps) {
                         await actions.newSession({
                             name:  Math.random().toString(36).substring(7),
                             nId: parseInt(id ?? "0"),
-                            qna: JSON.stringify(qanda)
+                            qna: qanda,
                         });
 
                         setIsDialogOpen(false);
@@ -58,7 +58,7 @@ export function NewSession({ id }: SessionDialogProps) {
     };
 
     const generateNewQuestion = async () => {
-        const apiKey = "key";
+        const apiKey = "";
         const url = `https://api.openai.com/v1/chat/completions`;
 
         try {
@@ -73,7 +73,10 @@ export function NewSession({ id }: SessionDialogProps) {
                     messages: [
                         {
                             role: "system",
-                            content: `You are a negotiation expert helping a user define their negotiation strategy. Ask one question at a time to understand their needs and goals better. Previous chat: ${JSON.stringify(qanda)}. Ask a maximum of 10 questions in total. If you have already asked 10 questions, respond with an empty string or a short response.`
+                            content: `
+                            You are a negotiation expert assisting the user in defining their negotiation strategy. Your goal is to understand their needs, priorities, and any constraints they might have. Ask one question at a time, building on their previous answers to uncover specifics that will help you prepare them for the negotiation.
+                            Be conversational and empathetic. Frame questions in a way that feels natural, as if you are a trusted advisor who genuinely wants to help. Use previous chat context: ${JSON.stringify(qanda)} to avoid repeating questions. Limit yourself to a maximum of 10 questions, and if you have already asked 10, respond briefly and acknowledge that you've gathered enough for now.
+                            `
                         }
                     ],
                     max_tokens: 100,

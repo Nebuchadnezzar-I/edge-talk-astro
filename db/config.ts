@@ -14,7 +14,7 @@ const Sessions = defineTable({
         id: column.number({ primaryKey: true }),
         name: column.text(),
         nId: column.number({ references: () => Negotiations.columns.id }),
-        qna: column.text(),
+        qna: column.json(),
         chatHistory: column.json(),
         created_at: column.date(),
         updated_at: column.date(),

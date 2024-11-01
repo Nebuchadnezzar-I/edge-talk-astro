@@ -39,7 +39,7 @@ export const server = {
         input: z.object({
             name: z.string(),
             nId: z.number(),
-            qna: z.string()
+            qna: z.array(z.object({ q: z.string(), a: z.string() }))
         }),
         handler: async (input) => {
             await db.insert(Sessions).values({
@@ -59,15 +59,21 @@ export const server = {
     addMessageToSession: defineAction({
         input: z.object({
             id: z.number(),
+            type: z.enum(["s", "c"]),
             message: z.string()
         }),
         handler: async (input) => {
             const session = await db.select().from(Sessions).where(eq(Sessions.id, input.id)).then(res => res[0] as Session);
             if (!session) throw new Error(`Session ${input.id} not found`);
 
-            const newMessageHistory = [...session.chatHistory, { c: input.message }];
-            await db.update(Sessions).set({ chatHistory: newMessageHistory }).where(eq(Sessions.id, input.id));
+            if (input.type === "c") {
+                const newMessageHistory = [...session.chatHistory, { c: input.message }];
+                await db.update(Sessions).set({ chatHistory: newMessageHistory }).where(eq(Sessions.id, input.id));
+                return { message: `Message added to session ${input.id} successfully` };
+            }
 
+            const newMessageHistory = [...session.chatHistory, { s: input.message }];
+            await db.update(Sessions).set({ chatHistory: newMessageHistory }).where(eq(Sessions.id, input.id));
             return { message: `Message added to session ${input.id} successfully` };
         }
     })

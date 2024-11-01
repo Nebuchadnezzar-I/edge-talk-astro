@@ -2,20 +2,24 @@
 import { db, Sessions, eq } from "astro:db";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Button } from "../ui/button";
+import { QNAModal } from "./modal/QNA";
 
 const { id } = Astro.props;
 
-let session_data:
+let sessionData:
     {
         id: number,
         name: string,
+        nId: number,
+        qna: unknown,
+        chatHistory: unknown,
         created_at: Date,
         updated_at: Date,
-        nId: number}[]
+    }[]
     = [];
 
 if (id !== undefined) {
-    session_data = await db.select().from(Sessions).where(
+    sessionData = await db.select().from(Sessions).where(
         eq(Sessions.nId, parseInt(id, 10))
     );
 }
@@ -30,14 +34,12 @@ if (id !== undefined) {
         </TableRow>
     </TableHeader>
     <TableBody>
-        {session_data.map((s) => (
+        {sessionData.map((s) => (
             <TableRow>
                 <TableCell className="font-medium">{s.name}</TableCell>
                 <!-- TODO: Add modal -->
                 <TableCell className="font-medium">
-                    <Button variant="link" className="h-0 p-0">
-                        Q&A
-                    </Button>
+                    <QNAModal client:idle sessionData={s} />
                 </TableCell>
             <TableCell className="font-medium">
                 <a target="_blank" href={`/s/${s.id}`}>
