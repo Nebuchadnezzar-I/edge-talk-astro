@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 interface WindowProps {
     sessionData: {id: number; name: string; nId: number; qna: unknown; chatHistory: unknown; created_at: Date; updated_at: Date; } | null;
+    openAIkey: string;
 }
 
 type Message = {
@@ -13,7 +14,7 @@ type Message = {
     s?: string;
 };
 
-export function ChatClient({ sessionData }: WindowProps) {
+export function ChatClient({ sessionData, openAIkey }: WindowProps) {
     if (!sessionData) return null;
     if (!sessionData.chatHistory) sessionData.chatHistory = [{c: ""}, {s: ""}];
 
@@ -47,7 +48,7 @@ export function ChatClient({ sessionData }: WindowProps) {
     }
 
     const fetchAIResponse = async () => {
-        const apiKey = "";
+        const apiKey = openAIkey;
         const url = `https://api.openai.com/v1/chat/completions`;
 
         try {

@@ -18,9 +18,10 @@ const qanda: { q: string, a: string }[] = [];
 
 interface SessionDialogProps {
     id: string | undefined;
+    openAIkey: string;
 }
 
-export function NewSession({ id }: SessionDialogProps) {
+export function NewSession({ id, openAIkey }: SessionDialogProps) {
     const [userAnswer, setUserAnswer] = useState("");
     const [question, setQuestion] = useState("What’s one key outcome you hope to achieve in this negotiation?");
     const [loading, startTransition] = useTransition();
@@ -58,7 +59,7 @@ export function NewSession({ id }: SessionDialogProps) {
     };
 
     const generateNewQuestion = async () => {
-        const apiKey = "";
+        const apiKey = openAIkey;
         const url = `https://api.openai.com/v1/chat/completions`;
 
         try {

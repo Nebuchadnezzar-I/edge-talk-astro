@@ -11,6 +11,8 @@ import Head from '@/components/Head.astro';
 import { NewNegotiation } from "@/components/custom/modal/NewNegotiation.tsx";
 import { NewSession } from "@/components/custom/modal/NewSession";
 import { RemoveNegotiation } from "@/components/custom/modal/RemoveNegotiation";
+
+const OPEN_AI_API_KEY = import.meta.env.PUBLIC_OPEN_AI_API_KEY;
 ---
 
 <!DOCTYPE html>
@@ -42,7 +44,7 @@ import { RemoveNegotiation } from "@/components/custom/modal/RemoveNegotiation";
                 {id !== undefined && (
                     <>
                         <div class="flex items-center pb-2 gap-2 justify-end">
-                            <NewSession client:idle id={id} />
+                            <NewSession client:idle id={id} openAIkey={OPEN_AI_API_KEY} />
                             <RemoveNegotiation client:idle id={id} />
                         </div>
 
